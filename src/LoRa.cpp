@@ -112,6 +112,9 @@ int LoRaClass::begin(long frequency)
   // put in sleep mode
   sleep();
 
+  // set LoRa mode
+  setLongRangeMode();
+
   // set frequency
   setFrequency(frequency);
 
@@ -349,14 +352,19 @@ void LoRaClass::receive(int size)
 }
 #endif
 
+void LoRaClass::setLongRangeMode()
+{
+  writeRegister(REG_OP_MODE, (readRegister(REG_OP_MODE) & 0x7f) | MODE_LONG_RANGE_MODE);
+}
+
 void LoRaClass::idle()
 {
-  writeRegister(REG_OP_MODE, MODE_LONG_RANGE_MODE | MODE_STDBY);
+  writeRegister(REG_OP_MODE, (readRegister(REG_OP_MODE) & 0x78) | MODE_STDBY);
 }
 
 void LoRaClass::sleep()
 {
-  writeRegister(REG_OP_MODE, MODE_LONG_RANGE_MODE | MODE_SLEEP);
+  writeRegister(REG_OP_MODE, (readRegister(REG_OP_MODE) & 0x78) | MODE_SLEEP);
 }
 
 void LoRaClass::setTxPower(int level, int outputPin)

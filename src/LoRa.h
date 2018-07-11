@@ -54,6 +54,7 @@ public:
 
   void receive(int size = 0);
 #endif
+  void setLongRangeMode();
   void idle();
   void sleep();
 
